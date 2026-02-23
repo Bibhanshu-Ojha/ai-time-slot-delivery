@@ -1,0 +1,17 @@
+<h2>Assign Delivery</h2>
+
+{% for parcel in parcels %}
+<form method="POST">
+  Parcel ID: {{ parcel[0] }} - {{ parcel[2] }}
+
+  <select name="staff_id">
+    {% for staff in staff_list %}
+    <option value="{{ staff[0] }}">{{ staff[1] }}</option>
+    {% endfor %}
+  </select>
+
+  <input type="hidden" name="parcel_id" value="{{ parcel[0] }}" />
+  <button type="submit">Assign</button>
+</form>
+<hr />
+{% endfor %}

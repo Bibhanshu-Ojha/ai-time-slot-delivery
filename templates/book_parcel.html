@@ -1,0 +1,15 @@
+<h2>Book Parcel</h2>
+<form method="POST">
+  Parcel Name: <input type="text" name="parcel_name" /><br /><br />
+
+  Select Time Slot:
+  <select name="slot_id">
+    {% for slot in slots %}
+    <option value="{{ slot[0] }}">
+      {{ slot[1] }} (Available: {{ slot[2] - slot[3] }})
+    </option>
+    {% endfor %}</select
+  ><br /><br />
+
+  <button type="submit">Book</button>
+</form>

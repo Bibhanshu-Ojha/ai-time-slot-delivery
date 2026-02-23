@@ -1,0 +1,16 @@
+<h2>My Deliveries</h2>
+
+{% for parcel in parcels %}
+<form method="POST">
+  Parcel ID: {{ parcel[0] }} - {{ parcel[2] }}
+
+  <select name="status">
+    <option>Delivered</option>
+    <option>Failed</option>
+  </select>
+
+  <input type="hidden" name="parcel_id" value="{{ parcel[0] }}" />
+  <button type="submit">Update</button>
+</form>
+<hr />
+{% endfor %}
