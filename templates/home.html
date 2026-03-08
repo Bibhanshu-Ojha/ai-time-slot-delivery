@@ -1,3 +1,32 @@
-<h2>AI Time Slot Delivery System</h2>
-<a href="/register">Register Here</a>
-<a href="/login">Login Here</a>
+{% extends "base.html" %} {% block content %}
+<div class="hero">
+  <h1>AI-Based Customized Time Slot Delivery</h1>
+  <p>
+    Schedule parcel deliveries at your preferred time and avoid missed
+    deliveries. Our intelligent system helps coordinate between customers,
+    delivery staff, and administrators for efficient last-mile delivery.
+  </p>
+
+  <div class="actions">
+    <a class="btn" href="/register">Create Account</a>
+    <a class="btn secondary" href="/login">Login</a>
+  </div>
+</div>
+
+<div class="features">
+  <div class="feature">
+    <h3>Choose Delivery Time</h3>
+    <p>Select convenient delivery slots such as 9-12, 12-3, 3-6, 6-9.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Real-Time Tracking</h3>
+    <p>Users can track their parcels and see delivery updates.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Efficient Delivery</h3>
+    <p>Staff receive optimized delivery assignments.</p>
+  </div>
+</div>
+{% endblock %}

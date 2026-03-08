@@ -109,10 +109,26 @@ def book_parcel():
         return redirect("/my_parcels")
 
     # Fetch slots for dropdown
+    # cursor.execute("SELECT * FROM time_slots")
+    # slots = cursor.fetchall()
+    user_id = session["user_id"]
+
+    # find most used slot for this user
+    cursor.execute(
+        "SELECT slot_id, COUNT(*) as count FROM parcels WHERE user_id=%s GROUP BY slot_id ORDER BY count DESC LIMIT 1",
+        (user_id,),
+    )
+    suggested = cursor.fetchone()
+
+    # fetch all slots
     cursor.execute("SELECT * FROM time_slots")
     slots = cursor.fetchall()
 
-    return render_template("book_parcel.html", slots=slots)
+    suggested_slot = suggested[0] if suggested else None
+
+    return render_template(
+        "book_parcel.html", slots=slots, suggested_slot=suggested_slot
+    )
 
 
 # (/admin_assign)to view all bookings
@@ -179,7 +195,8 @@ def my_parcels():
 
     return render_template("my_parcels.html", parcels=parcels)
 
-#(/logout) route to clear session
+
+# (/logout) route to clear session
 @app.route("/logout")
 def logout():
     session.clear()

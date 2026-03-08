@@ -1,3 +1,5 @@
 notedown how to run the program.
 cd ai_time_slot_delivery
-python -m venv venv 
+python -m venv venv
+venv\Scripts\activate
+python app.py 
