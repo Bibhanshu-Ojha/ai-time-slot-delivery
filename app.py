@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 from flask import session
 import mysql.connector
 
@@ -11,13 +11,13 @@ db = mysql.connector.connect(
 )
 
 
-# homepage route
+# (/)homepage route
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
-# registration route
+# (/register) route
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -33,12 +33,12 @@ def register():
         )
         db.commit()
 
-        return "User Registered Successfully"
+        return redirect("/")
 
     return render_template("register.html")
 
 
-# login route
+# (/login) route
 @app.route("/login", methods=["GET", "POST"])
 def login():
     cursor = db.cursor()
@@ -56,23 +56,30 @@ def login():
         if user:
             session["user_id"] = user[0]
             session["role"] = user[1]
-            return "Login Successful"
+            if user[1] == "User":
+                return redirect("/book")
+            elif user[1] == "Admin":
+                return redirect("/admin_assign")
+            elif user[1] == "Staff":
+                return redirect("/staff_dashboard")
         else:
             return "Invalid Credentials"
 
     return render_template("login.html")
 
 
-# booking route
+# (/book) route
 @app.route("/book", methods=["GET", "POST"])
 def book_parcel():
+
+    if "user_id" not in session or session["role"] != "User":
+        return "Unauthorized Access"
+
     cursor = db.cursor()
 
     if request.method == "POST":
         parcel_name = request.form["parcel_name"]
         slot_id = request.form["slot_id"]
-        if "user_id" not in session:
-            return "Please Login First"
         user_id = session["user_id"]
 
         # Check slot capacity
@@ -99,7 +106,7 @@ def book_parcel():
         )
         db.commit()
 
-        return "Parcel Booked Successfully!"
+        return redirect("/my_parcels")
 
     # Fetch slots for dropdown
     cursor.execute("SELECT * FROM time_slots")
@@ -108,9 +115,13 @@ def book_parcel():
     return render_template("book_parcel.html", slots=slots)
 
 
-# admin route to view all bookings
+# (/admin_assign)to view all bookings
 @app.route("/admin_assign", methods=["GET", "POST"])
 def admin_assign():
+
+    if "role" not in session or session["role"] != "Admin":
+        return "Unauthorized Access"
+
     cursor = db.cursor()
 
     if request.method == "POST":
@@ -125,16 +136,21 @@ def admin_assign():
     cursor.execute("SELECT * FROM parcels WHERE staff_id IS NULL")
     parcels = cursor.fetchall()
 
-    cursor.execute("SELECT * FROM staff")
+    cursor.execute("SELECT user_id, full_name FROM users WHERE role='Staff'")
     staff_list = cursor.fetchall()
 
     return render_template("admin_assign.html", parcels=parcels, staff_list=staff_list)
 
 
-# staff route to view assigned parcels
+# (/staff_dashboard) to view assigned parcels
 @app.route("/staff_dashboard", methods=["GET", "POST"])
 def staff_dashboard():
+
+    if "user_id" not in session or session["role"] != "Staff":
+        return "Unauthorized Access"
+
     cursor = db.cursor()
+    staff_id = session["user_id"]
 
     if request.method == "POST":
         parcel_id = request.form["parcel_id"]
@@ -145,25 +161,29 @@ def staff_dashboard():
         )
         db.commit()
 
-    staff_id = 1  # demo hardcoded staff login (we improve later)
-
     cursor.execute("SELECT * FROM parcels WHERE staff_id=%s", (staff_id,))
     parcels = cursor.fetchall()
 
     return render_template("staff_dashboard.html", parcels=parcels)
 
 
-# customer route to view their bookings
+# (/my_parcels)customer route to view their bookings
 @app.route("/my_parcels")
 def my_parcels():
-    if "user_id" not in session:
-        return "Login first"
+    if "user_id" not in session or session["role"] != "User":
+        return "Unauthorized Access"
 
     cursor = db.cursor()
     cursor.execute("SELECT * FROM parcels WHERE user_id=%s", (session["user_id"],))
     parcels = cursor.fetchall()
 
-    return str(parcels)
+    return render_template("my_parcels.html", parcels=parcels)
+
+#(/logout) route to clear session
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 
 if __name__ == "__main__":

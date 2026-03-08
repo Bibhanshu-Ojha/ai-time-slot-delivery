@@ -1,0 +1,7 @@
+<h2>My Parcels</h2>
+{% for parcel in parcels %}
+    Parcel ID: {{ parcel[0] }} |
+    Name: {{ parcel[2] }} |
+    Status: {{ parcel[4] }} <br>
+{% endfor %}
+<a href="/logout">Logout</a>
