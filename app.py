@@ -126,6 +126,7 @@ def book_parcel():
 
     suggested_slot = suggested[0] if suggested else None
 
+    print(slots)
     return render_template(
         "book_parcel.html", slots=slots, suggested_slot=suggested_slot
     )
