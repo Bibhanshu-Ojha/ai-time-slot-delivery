@@ -3,12 +3,25 @@
 <form method="POST">
   Parcel Name: <input type="text" name="parcel_name" /><br /><br />
 
-  Select Time Slot:
+  Select Time Slot: {% if suggested_slot %}
+  <p><b>Suggested slot based on your past bookings.</b></p>
+  {% endif %}
   <select name="slot_id" required>
     {% for slot in slots %}
 
-    <option value="{{ slot[0] }}">
-      {{ slot[1] }} (Available: {{ slot[2] - slot[3] }})
+    <option
+      value="{{ slot[0] }}"
+      {%
+      if
+      slot[0]=="suggested_slot"
+      %}
+      selected
+      {%
+      endif
+      %}
+    >
+      {{ slot[1] }} (Available: {{ slot[2] - slot[3] }}) {% if slot[0] ==
+      suggested_slot %} ⭐ Recommended {% endif %}
     </option>
 
     {% endfor %}

@@ -1,5 +1,4 @@
-from flask import Flask, redirect, render_template, request
-from flask import session
+from flask import Flask, redirect, render_template, request, session
 import mysql.connector
 
 app = Flask(__name__)
