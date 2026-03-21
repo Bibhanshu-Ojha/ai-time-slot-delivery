@@ -1,32 +1,55 @@
 {% extends "base.html" %} {% block content %}
-<div class="hero">
+<section class="hero">
   <h1>AI-Based Customized Time Slot Delivery</h1>
   <p>
-    Schedule parcel deliveries at your preferred time and avoid missed
-    deliveries. Our intelligent system helps coordinate between customers,
-    delivery staff, and administrators for efficient last-mile delivery.
+    Stop missing deliveries. Schedule your parcels during windows that actually
+    work for you using our intelligent time-slot optimization.
   </p>
 
-  <div class="actions">
+  <div class="actions" style="margin-top: 30px">
+    {% if not session.get('user_id') %}
     <a class="btn" href="/register">Create Account</a>
-    <a class="btn secondary" href="/login">Login</a>
+    <a class="btn secondary" href="/login">Login to Dashboard</a>
+    {% else %}
+    <a class="btn" href="/book">Book a New Parcel</a>
+    {% endif %}
   </div>
-</div>
+</section>
 
-<div class="features">
-  <div class="feature">
-    <h3>Choose Delivery Time</h3>
-    <p>Select convenient delivery slots such as 9-12, 12-3, 3-6, 6-9.</p>
+<section
+  class="features"
+  style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+  "
+>
+  <div class="card feature">
+    <div style="font-size: 2rem; margin-bottom: 15px">⏰</div>
+    <h3>Choose Your Time</h3>
+    <p>
+      Pick from 9-12, 12-3, 3-6, or 6-9 slots. We adapt to your schedule, not
+      the other way around.
+    </p>
   </div>
 
-  <div class="feature">
-    <h3>Real-Time Tracking</h3>
-    <p>Users can track their parcels and see delivery updates.</p>
+  <div class="card feature">
+    <div style="font-size: 2rem; margin-bottom: 15px">🤖</div>
+    <h3>AI Suggestions</h3>
+    <p>
+      Our system learns your preferred habits and suggests the best slots to
+      ensure you're home.
+    </p>
   </div>
 
-  <div class="feature">
-    <h3>Efficient Delivery</h3>
-    <p>Staff receive optimized delivery assignments.</p>
+  <div class="card feature">
+    <div style="font-size: 2rem; margin-bottom: 15px">📍</div>
+    <h3>Live Tracking</h3>
+    <p>
+      Stay updated with real-time status changes from 'Booked' to 'Delivered' at
+      a glance.
+    </p>
   </div>
-</div>
+</section>
 {% endblock %}

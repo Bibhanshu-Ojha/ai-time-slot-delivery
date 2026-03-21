@@ -1,34 +1,32 @@
-{% extends "base.html" %} {% block content %}
-<h2>Book Parcel</h2>
-<form method="POST">
-  Parcel Name: <input type="text" name="parcel_name" /><br /><br />
+{% extends "base.html" %} 
+{% block content %}
+<div style="max-width: 600px; margin: 40px auto;">
+    <div class="card">
+        <h2 style="margin-top: 0; color: var(--brand-dark);">New Shipment</h2>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">Enter your parcel details and select a preferred delivery window.</p>
 
-  Select Time Slot: {% if suggested_slot %}
-  <p><b>Suggested slot based on your past bookings.</b></p>
-  {% endif %}
-  <select name="slot_id" required>
-    {% for slot in slots %}
+        <form method="POST">
+            <label>Parcel Name / Description</label>
+            <input type="text" name="parcel_name" placeholder="e.g. Laptop Charger, Documents" required />
 
-    <option
-      value="{{ slot[0] }}"
-      {%
-      if
-      slot[0]=="suggested_slot"
-      %}
-      selected
-      {%
-      endif
-      %}
-    >
-      {{ slot[1] }} (Available: {{ slot[2] - slot[3] }}) {% if slot[0] ==
-      suggested_slot %} ⭐ Recommended {% endif %}
-    </option>
+            <label>Select Delivery Time Slot</label>
 
-    {% endfor %}
-  </select>
-  <br /><br />
+            {% if suggested_slot %}
+            <p style="font-size: 0.85rem; color: var(--success); font-weight: 600; margin-bottom: 8px;">
+                ✨ AI: {{ recommendation_type }}
+            </p>
+            {% endif %}
 
-  <button type="submit">Book</button>
-</form>
-
+            <select name="slot_id" required>
+                {% for slot in slots %}
+                <option value="{{ slot[0] }}" {% if slot[0] == suggested_slot %} selected {% endif %}>
+                    {{ slot[1] }} (Available: {{ slot[2] - slot[3] }}) 
+                    {% if slot[0] == suggested_slot %} ⭐ Recommended {% endif %}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit" style="width: 100%; margin-top: 10px;">Confirm Booking</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

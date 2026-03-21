@@ -1,14 +1,62 @@
 {% extends "base.html" %} {% block content %}
-<form method="POST">
-  Name: <input type="text" name="name" /><br />
-  Email: <input type="email" name="email" /><br />
-  Password: <input type="password" name="password" /><br />
-  Role:
-  <select name="role">
-    <option>User</option>
-    <option>Admin</option>
-    <option>Staff</option></select
-  ><br />
-  <button type="submit">Register</button>
-</form>
+<div style="max-width: 500px; margin: 40px auto">
+  <div class="card">
+    <h2 style="margin-top: 0; color: var(--brand-dark)">Create Account</h2>
+    <p style="color: var(--text-muted); margin-bottom: 25px">
+      Join the On-Time delivery network today.
+    </p>
+
+    <form method="POST">
+      <label>Full Name</label>
+      <input type="text" name="name" placeholder="John Doe" required />
+
+      <label>Email Address</label>
+      <input
+        type="email"
+        name="email"
+        placeholder="john@example.com"
+        required
+      />
+
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        placeholder="Min. 8 characters"
+        required
+      />
+
+      <label>Account Role</label>
+      <select name="role">
+        <option value="User">Customer (Book Parcels)</option>
+        <option value="Staff">Delivery Staff</option>
+        <option value="Admin">Administrator</option>
+      </select>
+
+      <button type="submit" style="width: 100%; margin-top: 10px">
+        Register Now
+      </button>
+    </form>
+
+    <p
+      style="
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      "
+    >
+      Already have an account?
+      <a
+        href="/login"
+        style="
+          color: var(--brand-primary);
+          font-weight: 600;
+          text-decoration: none;
+        "
+        >Login</a
+      >
+    </p>
+  </div>
+</div>
 {% endblock %}

@@ -1,20 +1,51 @@
-{% extends "base.html" %} {% block content %}
-<h2>Assign Delivery</h2>
+{% extends "base.html" %} 
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2 style="color: var(--brand-dark); margin: 0;">Logistics Control Tower</h2>
+    <span class="status booked" style="padding: 8px 16px;">Pending Assignments</span>
+</div>
 
-{% for parcel in parcels %}
-<form method="POST">
-  Parcel ID: {{ parcel[0] }} - {{ parcel[2] }}
+{% if parcels %}
+<table>
+    <thead>
+        <tr>
+            <th>Parcel ID</th>
+            <th>Description</th>
+            <th>Assign Delivery Staff</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for parcel in parcels %}
+        <tr>
+            <td style="font-weight: 600;">#{{ parcel[0] }}</td>
+            <td>{{ parcel[2] }}</td>
+            <form method="POST">
+                <td>
+                    <select name="staff_id" style="margin: 0; padding: 8px;">
+                        {% for staff in staff_list %}
+                        <option value="{{ staff[0] }}">{{ staff[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="hidden" name="parcel_id" value="{{ parcel[0] }}" />
+                    <button type="submit" class="btn" style="padding: 8px 16px; font-size: 0.8rem;">Assign Now</button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="card" style="text-align: center; padding: 60px;">
+    <div style="font-size: 3rem; margin-bottom: 20px;">✅</div>
+    <h3 style="color: var(--text-dark);">All Caught Up!</h3>
+    <p style="color: var(--text-muted);">There are no unassigned parcels in the queue.</p>
+</div>
+{% endif %}
 
-  <select name="staff_id">
-    {% for staff in staff_list %}
-    <option value="{{ staff[0] }}">{{ staff[1] }}</option>
-    {% endfor %}
-  </select>
-
-  <input type="hidden" name="parcel_id" value="{{ parcel[0] }}" />
-  <button type="submit">Assign</button>
-</form>
-<hr />
-{% endfor %}
-<a href="/logout">Logout</a>
+<div style="margin-top: 40px; text-align: center;">
+    <a href="/logout" style="color: var(--danger); font-size: 0.9rem; text-decoration: none; font-weight: 600;">System Logout</a>
+</div>
 {% endblock %}

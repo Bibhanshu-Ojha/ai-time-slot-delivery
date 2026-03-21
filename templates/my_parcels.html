@@ -1,7 +1,45 @@
-{% extends "base.html" %} {% block content %}
-<h2>My Parcels</h2>
-{% for parcel in parcels %} Parcel ID: {{ parcel[0] }} | Name: {{ parcel[2] }} |
-Status: {{ parcel[4] }} <br />
-{% endfor %}
-<a href="/logout">Logout</a>
+{% extends "base.html" %} 
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2 style="color: var(--brand-dark); margin: 0;">My Shipments</h2>
+    <a href="/book" class="btn">New Booking +</a>
+</div>
+
+{% if parcels %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Parcel Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for parcel in parcels %}
+        <tr>
+            <td style="font-weight: 600; color: var(--brand-primary);">#{{ parcel[0] }}</td>
+            <td>{{ parcel[2] }}</td>
+            <td>
+                <span class="status {{ parcel[4]|lower }}">
+                    {{ parcel[4] }}
+                </span>
+            </td>
+            <td>
+                <a href="#" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="card" style="text-align: center; padding: 60px;">
+    <p style="color: var(--text-muted);">No parcels found. Ready to send something?</p>
+    <a href="/book" class="btn secondary">Book your first parcel</a>
+</div>
+{% endif %}
+
+<div style="margin-top: 40px; text-align: center;">
+    <a href="/logout" style="color: var(--danger); font-size: 0.9rem; text-decoration: none; font-weight: 600;">Logout from System</a>
+</div>
 {% endblock %}

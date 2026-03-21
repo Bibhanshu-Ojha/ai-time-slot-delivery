@@ -1,19 +1,73 @@
 {% extends "base.html" %} {% block content %}
-<h2>My Deliveries</h2>
+<div style="margin-bottom: 30px">
+  <h2 style="color: var(--brand-dark); margin: 0">Delivery Manifest</h2>
+  <p style="color: var(--text-muted)">
+    Manage your assigned shipments and update their status.
+  </p>
+</div>
 
-{% for parcel in parcels %}
-<form method="POST">
-  Parcel ID: {{ parcel[0] }} - {{ parcel[2] }}
+{% if parcels %}
+<table>
+  <thead>
+    <tr>
+      <th>Parcel</th>
+      <th>Current Status</th>
+      <th>Update Progress</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for parcel in parcels %}
+    <tr>
+      <td>
+        <div style="font-weight: 600">#{{ parcel[0] }}</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted)">
+          {{ parcel[2] }}
+        </div>
+      </td>
+      <td>
+        <span class="status {{ parcel[4]|lower }}"> {{ parcel[4] }} </span>
+      </td>
+      <form method="POST">
+        <td>
+          <select name="status" style="margin: 0; padding: 8px">
+            <option value="Delivered">Mark as Delivered</option>
+            <option value="Failed">Mark as Failed</option>
+          </select>
+        </td>
+        <td>
+          <input type="hidden" name="parcel_id" value="{{ parcel[0] }}" />
+          <button
+            type="submit"
+            class="btn secondary"
+            style="padding: 8px 16px; font-size: 0.8rem"
+          >
+            Update
+          </button>
+        </td>
+      </form>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="card" style="text-align: center; padding: 60px">
+  <p style="color: var(--text-muted)">
+    No deliveries assigned to you yet. Check back soon!
+  </p>
+</div>
+{% endif %}
 
-  <select name="status">
-    <option>Delivered</option>
-    <option>Failed</option>
-  </select>
-
-  <input type="hidden" name="parcel_id" value="{{ parcel[0] }}" />
-  <button type="submit">Update</button>
-</form>
-<hr />
-{% endfor %}
-<a href="/logout">Logout</a>
+<div style="margin-top: 40px; text-align: center">
+  <a
+    href="/logout"
+    style="
+      color: var(--danger);
+      font-size: 0.9rem;
+      text-decoration: none;
+      font-weight: 600;
+    "
+    >Staff Logout</a
+  >
+</div>
 {% endblock %}

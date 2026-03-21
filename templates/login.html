@@ -1,8 +1,63 @@
 {% extends "base.html" %} {% block content %}
-<h2>Login</h2>
-<form method="POST">
-    Email: <input type="email" name="email" /><br /><br />
-    Password: <input type="password" name="password" /><br /><br />
-    <button type="submit">Login</button>
-</form>
+<div style="max-width: 450px; margin: 60px auto">
+  <div class="card">
+    <h2 style="margin-top: 0; color: var(--brand-dark)">Welcome Back</h2>
+    <p style="color: var(--text-muted); margin-bottom: 25px">
+      Please enter your details to sign in.
+    </p>
+
+    {% if error %}
+    <div
+      style="
+        background: #fee2e2;
+        color: #b91c1c;
+        padding: 12px;
+        border-radius: var(--radius-sm);
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        border: 1px solid #fecaca;
+      "
+    >
+      ⚠️ {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+      <label>Email Address</label>
+      <input
+        type="email"
+        name="email"
+        placeholder="name@company.com"
+        required
+      />
+
+      <label>Password</label>
+      <input type="password" name="password" placeholder="••••••••" required />
+
+      <button type="submit" style="width: 100%; margin-top: 10px">
+        Sign In
+      </button>
+    </form>
+
+    <p
+      style="
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      "
+    >
+      Don't have an account?
+      <a
+        href="/register"
+        style="
+          color: var(--brand-primary);
+          font-weight: 600;
+          text-decoration: none;
+        "
+        >Create one here</a
+      >
+    </p>
+  </div>
+</div>
 {% endblock %}
