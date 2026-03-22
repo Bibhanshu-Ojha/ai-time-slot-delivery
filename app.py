@@ -9,6 +9,7 @@ app.secret_key = "supersecretkey"
 db = mysql.connector.connect(
     host="localhost", user="root", password="@ojha", database="time_slot_delivery"
 )
+db.autocommit = True
 
 
 # (/)homepage route
@@ -188,10 +189,10 @@ def admin_assign():
     return render_template("admin_assign.html", parcels=parcels, staff_list=staff_list)
 
 
-# (/staff_dashboard) to view assigned parcels
+# (/staff_dashboard) to view assigned parcels and update delivery status
 @app.route("/staff_dashboard", methods=["GET", "POST"])
 def staff_dashboard():
-
+    # SECURITY CHECK: Ensure only logged-in Staff can access
     if "user_id" not in session or session.get("role") != "Staff":
         flash("Access Denied: Staff account required.", "danger")
         return redirect("/login")
@@ -201,13 +202,36 @@ def staff_dashboard():
 
     if request.method == "POST":
         parcel_id = request.form["parcel_id"]
-        status = request.form["status"]
+        new_status = request.form["status"]
 
+        # 1. Fetch current details to check if we need to release a slot
         cursor.execute(
-            "UPDATE parcels SET status=%s WHERE parcel_id=%s", (status, parcel_id)
+            "SELECT slot_id, status FROM parcels WHERE parcel_id=%s", (parcel_id,)
         )
-        db.commit()
+        parcel_data = cursor.fetchone()
 
+        if parcel_data:
+            slot_id = parcel_data[0]
+            old_status = parcel_data[1]
+
+            # 2. Update the parcel status in the database
+            cursor.execute(
+                "UPDATE parcels SET status=%s WHERE parcel_id=%s",
+                (new_status, parcel_id),
+            )
+
+            # 3. CAPACITY LOGIC: If status changes to Delivered, free up the slot
+            # We check (old_status != "Delivered") so we don't subtract twice by mistake
+            if new_status == "Delivered" and old_status != "Delivered":
+                cursor.execute(
+                    "UPDATE time_slots SET current_load = current_load - 1 WHERE slot_id=%s",
+                    (slot_id,),
+                )
+
+            db.commit()
+            flash(f"Parcel #{parcel_id} status updated to {new_status}.", "success")
+
+    # Fetch updated list of assigned parcels for this staff member
     cursor.execute("SELECT * FROM parcels WHERE staff_id=%s", (staff_id,))
     parcels = cursor.fetchall()
 
@@ -225,6 +249,128 @@ def my_parcels():
     parcels = cursor.fetchall()
 
     return render_template("my_parcels.html", parcels=parcels)
+
+
+# (/cancel_parcel/<parcel_id>) route to allow customers to cancel their parcel delivery
+@app.route("/cancel_parcel/<int:parcel_id>")
+def cancel_parcel(parcel_id):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    cursor = db.cursor()
+
+    # 1. Get the slot_id and current status first
+    cursor.execute(
+        "SELECT slot_id, status FROM parcels WHERE parcel_id=%s AND user_id=%s",
+        (parcel_id, session["user_id"]),
+    )
+    parcel = cursor.fetchone()
+
+    if parcel:
+        slot_id = parcel[0]
+        status = parcel[1]
+
+        # 2. Only allow cancellation if it hasn't been delivered/cancelled yet
+        if status == "Booked":
+            # Update parcel status
+            cursor.execute(
+                "UPDATE parcels SET status='Cancelled' WHERE parcel_id=%s", (parcel_id,)
+            )
+
+            # Release the slot load
+            cursor.execute(
+                "UPDATE time_slots SET current_load = current_load - 1 WHERE slot_id=%s",
+                (slot_id,),
+            )
+
+            db.commit()
+            flash("Parcel booking cancelled successfully. Slot released.", "success")
+        else:
+            flash(
+                "Cannot cancel a parcel that is already in transit or delivered.",
+                "danger",
+            )
+
+    return redirect("/my_parcels")
+
+
+# (/reschedule/<parcel_id>) route to allow customers to reschedule their parcel delivery
+@app.route("/reschedule/<int:parcel_id>", methods=["GET", "POST"])
+def reschedule_parcel(parcel_id):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    cursor = db.cursor()
+
+    if request.method == "POST":
+        new_slot_id = request.form["slot_id"]
+
+        # 1. Get the OLD slot_id
+        cursor.execute("SELECT slot_id FROM parcels WHERE parcel_id=%s", (parcel_id,))
+        old_slot_id = cursor.fetchone()[0]
+
+        # 2. Check if the NEW slot has space
+        cursor.execute(
+            "SELECT max_capacity, current_load FROM time_slots WHERE slot_id=%s",
+            (new_slot_id,),
+        )
+        new_slot = cursor.fetchone()
+
+        if new_slot[1] >= new_slot[0]:
+            flash("The new slot is full! Please pick another time.", "danger")
+            return redirect(f"/reschedule/{parcel_id}")
+
+        # 3. SWAP LOGIC: Decrease old, Increase new
+        cursor.execute(
+            "UPDATE time_slots SET current_load = current_load - 1 WHERE slot_id=%s",
+            (old_slot_id,),
+        )
+        cursor.execute(
+            "UPDATE time_slots SET current_load = current_load + 1 WHERE slot_id=%s",
+            (new_slot_id,),
+        )
+
+        # 4. Update the parcel record
+        cursor.execute(
+            "UPDATE parcels SET slot_id=%s, status='Booked' WHERE parcel_id=%s",
+            (new_slot_id, parcel_id),
+        )
+
+        db.commit()
+        flash("Parcel rescheduled successfully!", "success")
+        return redirect("/my_parcels")
+
+    # GET request: Show the slots available
+    cursor.execute("SELECT * FROM time_slots")
+    slots = cursor.fetchall()
+    return render_template("reschedule.html", slots=slots, parcel_id=parcel_id)
+
+
+# (/parcel_details/<parcel_id>) route to show detailed info about a specific parcel
+@app.route("/parcel_details/<int:parcel_id>")
+def parcel_details(parcel_id):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    cursor = db.cursor()
+    # Fetch parcel info + the timestamp
+    cursor.execute(
+        """
+        SELECT p.parcel_id, p.parcel_name, p.status, p.updated_at, t.slot_label 
+        FROM parcels p 
+        JOIN time_slots t ON p.slot_id = t.slot_id 
+        WHERE p.parcel_id = %s AND p.user_id = %s
+    """,
+        (parcel_id, session["user_id"]),
+    )
+
+    parcel = cursor.fetchone()
+
+    if not parcel:
+        flash("Parcel not found.", "danger")
+        return redirect("/my_parcels")
+
+    return render_template("parcel_details.html", parcel=parcel)
 
 
 # (/logout) route to clear session

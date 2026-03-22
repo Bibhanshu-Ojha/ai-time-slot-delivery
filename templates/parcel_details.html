@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block content %}
+<div style="max-width: 500px; margin: 40px auto">
+  <div class="card" style="text-align: center">
+    <h2 style="color: var(--brand-dark)">Parcel Tracking</h2>
+    <hr style="border: 0.5px solid #eee; margin: 20px 0" />
+
+    <div style="margin-bottom: 20px">
+      <p
+        style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px"
+      >
+        Tracking ID
+      </p>
+      <strong style="font-size: 1.2rem">#{{ parcel[0] }}</strong>
+    </div>
+
+    <div style="margin-bottom: 20px">
+      <p
+        style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px"
+      >
+        Current Status
+      </p>
+      <span
+        class="status-badge"
+        style="
+                padding: 5px 15px; 
+                border-radius: 20px; 
+                font-weight: 700;
+                background-color: {% if parcel[2] == 'Delivered' %} #dcfce7 {% elif parcel[2] == 'Cancelled' %} #fee2e2 {% else %} #fef9c3 {% endif %};
+                color: {% if parcel[2] == 'Delivered' %} #166534 {% elif parcel[2] == 'Cancelled' %} #991b1b {% else %} #854d0e {% endif %};
+            "
+      >
+        {{ parcel[2] }}
+      </span>
+    </div>
+
+    <div
+      style="
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+      "
+    >
+      <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted)">
+        Last Activity Recorded At:
+      </p>
+      <p style="margin: 5px 0 0; font-weight: 600; color: var(--brand-dark)">
+        {{ parcel[3].strftime('%Y-%m-%d | %I:%M %p') }}
+      </p>
+    </div>
+
+    <div style="margin-top: 30px">
+      <a href="/my_parcels" class="btn secondary">Back to List</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

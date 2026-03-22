@@ -1,45 +1,109 @@
-{% extends "base.html" %} 
-{% block content %}
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-    <h2 style="color: var(--brand-dark); margin: 0;">My Shipments</h2>
-    <a href="/book" class="btn">New Booking +</a>
+{% extends "base.html" %} {% block content %}
+<div
+  style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  "
+>
+  <h2 style="color: var(--brand-dark); margin: 0">My Shipments</h2>
+  <a href="/book" class="btn">New Booking +</a>
 </div>
 
 {% if parcels %}
 <table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Parcel Name</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for parcel in parcels %}
-        <tr>
-            <td style="font-weight: 600; color: var(--brand-primary);">#{{ parcel[0] }}</td>
-            <td>{{ parcel[2] }}</td>
-            <td>
-                <span class="status {{ parcel[4]|lower }}">
-                    {{ parcel[4] }}
-                </span>
-            </td>
-            <td>
-                <a href="#" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">View Details</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Parcel Name</th>
+      <th>Status</th>
+      <th>Details</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for parcel in parcels %}
+    <tr>
+      <td style="font-weight: 600; color: var(--brand-primary)">
+        #{{ parcel[0] }}
+      </td>
+      <td>{{ parcel[2] }}</td>
+      <td>
+        <span class="status {{ parcel[4]|lower }}"> {{ parcel[4] }} </span>
+      </td>
+
+      <td>
+        <a
+          href="/parcel_details/{{ parcel[0] }}"
+          style="
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+          "
+        >
+          View Details →
+        </a>
+      </td>
+
+      <td>
+        {% if parcel[4] == 'Booked' %}
+        <div style="display: flex; gap: 15px; align-items: center">
+          <a
+            href="/reschedule/{{ parcel[0] }}"
+            style="
+              color: var(--brand-primary);
+              font-size: 0.85rem;
+              text-decoration: none;
+              font-weight: 600;
+            "
+          >
+            Reschedule
+          </a>
+          <span style="color: #e2e8f0">|</span>
+          <a
+            href="/cancel_parcel/{{ parcel[0] }}"
+            onclick="return confirm('Are you sure?');"
+            style="
+              color: var(--danger);
+              font-size: 0.85rem;
+              text-decoration: none;
+              font-weight: 600;
+            "
+          >
+            Cancel
+          </a>
+        </div>
+        {% else %}
+        <span style="color: var(--text-muted); font-size: 0.85rem"
+          >No Actions</span
+        >
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% else %}
-<div class="card" style="text-align: center; padding: 60px;">
-    <p style="color: var(--text-muted);">No parcels found. Ready to send something?</p>
-    <a href="/book" class="btn secondary">Book your first parcel</a>
+<div class="card" style="text-align: center; padding: 60px">
+  <p style="color: var(--text-muted)">
+    No parcels found. Ready to send something?
+  </p>
+  <a href="/book" class="btn secondary">Book your first parcel</a>
 </div>
 {% endif %}
 
-<div style="margin-top: 40px; text-align: center;">
-    <a href="/logout" style="color: var(--danger); font-size: 0.9rem; text-decoration: none; font-weight: 600;">Logout from System</a>
+<div style="margin-top: 40px; text-align: center">
+  <a
+    href="/logout"
+    style="
+      color: var(--danger);
+      font-size: 0.9rem;
+      text-decoration: none;
+      font-weight: 600;
+    "
+    >Logout from System</a
+  >
 </div>
 {% endblock %}
