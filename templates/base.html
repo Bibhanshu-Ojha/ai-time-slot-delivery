@@ -33,6 +33,12 @@
         <a href="/my_parcels">My Parcels</a>
         {% elif session.get('role') == 'Admin' %}
         <a href="/admin_assign">Assign Tasks</a>
+        <a
+          href="/admin_analytics"
+          style="font-weight: bold; color: var(--brand-primary)"
+        >
+          📊 View Analytics
+        </a>
         {% elif session.get('role') == 'Staff' %}
         <a href="/staff_dashboard">My Deliveries</a>
         {% endif %}
