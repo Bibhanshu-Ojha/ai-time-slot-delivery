@@ -1,7 +1,3 @@
-Here is your **complete README.md (ready to copy-paste for GitHub)** 👇
-
----
-
 # 🚀 AI-Based Customized Time Slot Delivery System
 
 ## 📌 Project Overview
@@ -339,6 +335,8 @@ SMTP_PASS = "your_app_password"
 ## 👨‍💻 Author
 
 Bibhanshu Ojha
+Rutik Sahoo
+Lippsha Rani Pradhan
 Final Year Project
 Gandhi Engineering College
 
