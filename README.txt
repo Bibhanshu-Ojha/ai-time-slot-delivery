@@ -1,139 +1,105 @@
+-----
+
 # 🚀 AI-Based Customized Time Slot Delivery System
 
-## 📌 Project Overview
+> A smart, web-based application designed to revolutionize last-mile delivery. By allowing users to select preferred delivery windows and utilizing rule-based AI for optimal scheduling, this system minimizes failed delivery attempts and streamlines coordination between customers, admins, and delivery staff.
 
-The **AI-Based Customized Time Slot Delivery System** is a web-based application designed to improve last-mile delivery efficiency in traditional postal systems. The system allows users to select preferred delivery time slots and uses basic AI logic to optimize delivery scheduling.
+-----
 
-This project aims to reduce failed delivery attempts, improve coordination between customers and delivery staff, and enhance overall delivery performance.
+## ✨ Key Features
 
----
+  - **⏰ Time-Slot Based Delivery:** Flexible windows (9–12, 12–3, 3–6, 6–9).
+  - **🤖 AI Slot Recommendation:** Smart suggestions based on historical data and current load capacity.
+  - **📦 Parcel Tracking:** Real-time status updates from dispatch to delivery.
+  - **🔔 Automated Email Notifications:** Integrated SMTP (via Mailtrap) to keep users informed.
+  - **🔐 Role-Based Access Control:** Dedicated, secure dashboards for Users, Staff, and Admins.
+  - **📊 Analytics Dashboard:** Comprehensive system overview for administrators.
 
-## 🎯 Key Features
-
-* ⏰ **Time-Slot Based Delivery** (9–12, 12–3, 3–6, 6–9)
-* 🤖 **AI-Based Slot Recommendation**
-* 👤 **User Registration & Login System**
-* 📦 **Parcel Booking & Tracking**
-* 🧑‍💼 **Admin Panel for Staff Assignment**
-* 🚚 **Delivery Staff Dashboard**
-* 🔔 **Email Notifications (SMTP - Mailtrap)**
-* 📊 **System Analytics Dashboard**
-* 🔐 **Role-Based Access Control**
-
----
-
-## 🛠️ Tech Stack
-
-### 💻 Backend
-
-* Python
-* Flask Framework
-
-### 🌐 Frontend
-
-* HTML
-* CSS
-* JavaScript
-
-### 🗄️ Database
-
-* MySQL
-
-### 🤖 AI / Logic
-
-* Rule-based AI (slot recommendation)
-
-### 📧 Notifications
-
-* SMTP (Mailtrap for testing)
-
----
-
-## ⚙️ System Modules
-
-* User Management Module
-* Parcel Management Module
-* Time Slot Management Module
-* AI Scheduling Module
-* Notification Module
-* Delivery Personnel Module
-* Database Management Module
-
----
+-----
 
 ## 🧩 How It Works
 
-1. User registers and logs into the system
-2. User books a parcel and selects a delivery time slot
-3. AI suggests the best slot based on availability/history
-4. Admin assigns delivery staff
-5. Staff receives delivery list and updates status
-6. User receives email notifications
-7. Parcel status is updated in real-time
+1.  👤 **User Registration:** Customers sign up and log into the portal.
+2.  📦 **Parcel Booking:** Users book a shipment and are presented with time slots.
+3.  🤖 **AI Optimization:** The system suggests the most efficient delivery window.
+4.  🧑‍💼 **Staff Assignment:** Admins review bookings and assign them to available delivery personnel.
+5.  🚚 **Delivery Execution:** Staff receive their itineraries and update delivery statuses on the go.
+6.  📧 **Real-Time Alerts:** Users receive email notifications at every milestone.
 
----
+-----
 
-## 🖥️ Installation & Setup
+## 🛠️ Tech Stack
 
-### 1️⃣ Clone the repository
+| Component | Technology |
+| :--- | :--- |
+| **Backend** | Python, Flask |
+| **Frontend** | HTML5, CSS3, JavaScript |
+| **Database** | MySQL |
+| **AI / Logic** | Rule-Based AI Scheduling & Capacity Checking |
+| **Notifications** | SMTP (Mailtrap) |
+
+-----
+
+## ⚙️ Installation & Setup
+
+**1. Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/ai-time-slot-delivery.git
+git clone https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery
 cd ai-time-slot-delivery
 ```
 
-### 2️⃣ Create virtual environment
+**2. Create and activate a virtual environment**
 
 ```bash
 python -m venv venv
 venv\Scripts\activate   # Windows
+# source venv/bin/activate # Mac/Linux
 ```
 
-### 3️⃣ Install dependencies
+**3. Install dependencies**
 
 ```bash
 pip install flask mysql-connector-python
 ```
 
-### 4️⃣ Setup Database
+**4. Update Database Connection**
+In your `app.py`, update the connection string with your MySQL credentials:
 
-* Create MySQL database:
-
-```sql
-CREATE DATABASE time_slot_delivery;
+```python
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="your_password",
+    database="time_slot_delivery"
+)
 ```
 
-* Import required tables (users, parcels, time_slots)
-
-### 5️⃣ Run the application
+**5. Run the Application**
 
 ```bash
 python app.py
 ```
 
-### 6️⃣ Open in browser
+*Access the app in your browser at: `http://127.0.0.1:5000`*
 
-```
-http://127.0.0.1:5000
-```
+-----
 
----
-### 📌 Database Setup Instructions
+## 🗄️ Database Setup
+
+\<details\>
+\<summary\>\<b\>Click to expand Database Schema & SQL Commands\</b\>\</summary\>
 
 ### 1️⃣ Create Database
-
-Open MySQL and run:
 
 ```sql
 CREATE DATABASE time_slot_delivery;
 USE time_slot_delivery;
 ```
 
----
-
 ### 2️⃣ Create Tables
 
-#### 👤 Users Table
+**Users Table**
 
 ```sql
 CREATE TABLE users (
@@ -145,9 +111,7 @@ CREATE TABLE users (
 );
 ```
 
----
-
-#### 📦 Parcels Table
+**Parcels Table**
 
 ```sql
 CREATE TABLE parcels (
@@ -162,9 +126,7 @@ CREATE TABLE parcels (
 );
 ```
 
----
-
-#### ⏰ Time Slots Table
+**Time Slots Table**
 
 ```sql
 CREATE TABLE time_slots (
@@ -175,9 +137,7 @@ CREATE TABLE time_slots (
 );
 ```
 
----
-
-### 3️⃣ Insert Default Time Slots
+### 3️⃣ Insert Default Data
 
 ```sql
 INSERT INTO time_slots (slot_label, max_capacity, current_load) VALUES
@@ -185,64 +145,28 @@ INSERT INTO time_slots (slot_label, max_capacity, current_load) VALUES
 ('12-3', 5, 0),
 ('3-6', 5, 0),
 ('6-9', 5, 0);
-```
 
----
-
-### 4️⃣ (Optional) Create Admin & Staff
-
-```sql
+-- Optional: Create default Admin & Staff
 INSERT INTO users (full_name, email, password, role) VALUES
 ('Admin User', 'admin@test.com', SHA2('admin123',256), 'Admin'),
 ('Staff Member', 'staff@test.com', SHA2('staff123',256), 'Staff');
 ```
 
----
+🔥 **Logic Note:** The AI recommendation engine relies on `max_capacity`, `current_load`, and `staff_id` to prevent overbooking and optimize delivery routes\!
 
-### 5️⃣ Update DB Connection in Code
+\</details\>
 
-In your `app.py`:
+-----
 
-```python
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="your_password",
-    database="time_slot_delivery"
-)
-```
+## 📧 Notification Setup (SMTP)
 
----
+The system uses SMTP to trigger emails upon parcel status updates. **Mailtrap** is used for safe, sandbox testing.
 
-# 🔥 Bonus 
+1.  Create a free account at [Mailtrap](https://mailtrap.io).
+2.  Go to **Email Testing → Inboxes** and copy your credentials.
+3.  Update `app.py` with your credentials:
 
-👉 System logic depends on:
-
-* Slot capacity check
-* AI recommendation
-* Staff assignment
-
-So database must include:
-
-* ✔ `current_load`
-* ✔ `max_capacity`
-* ✔ `staff_id`
----
-## 📧 SMTP (Email Notification Setup)
-
-The system uses SMTP (Simple Mail Transfer Protocol) to send email notifications when parcel status is updated.
-
-### 🔹 Using Mailtrap (Recommended for Testing)
-
-1. Go to https://mailtrap.io and create an account
-2. Navigate to **Email Testing → Inboxes**
-3. Open your inbox and copy SMTP credentials
-
----
-
-### 🔹 Update SMTP Configuration in `app.py`
-
-Replace with your Mailtrap credentials:
+<!-- end list -->
 
 ```python
 SMTP_SERVER = "sandbox.smtp.mailtrap.io"
@@ -251,103 +175,45 @@ SMTP_USER = "YOUR_MAILTRAP_USERNAME"
 SMTP_PASS = "YOUR_MAILTRAP_PASSWORD"
 ```
 
----
+> **⚠️ Note on Production:** For real-world deployment, replace Mailtrap with a live SMTP provider (like Gmail or Outlook). If using Gmail, ensure you generate an **App Password** instead of using your primary account password.
 
-### 🔹 How It Works
+-----
 
-* When delivery status is updated (e.g., Delivered)
-* The system triggers an email function
-* Email is sent to the user via SMTP
-* Mail appears in your Mailtrap inbox
+## 🔑 Roles & Access
 
----
+  - **👤 User:** Can book parcels, view AI slot suggestions, and track delivery status.
+  - **🧑‍💼 Admin:** Manages the system, views analytics, and assigns delivery personnel.
+  - **🚚 Staff:** Accesses their daily delivery itinerary and updates parcel statuses.
 
-### ⚠️ Notes
+-----
 
-* Mailtrap is used for testing (emails are NOT sent to real users)
-* For real deployment, you can replace Mailtrap with:
+## 🚧 Limitations & 🔮 Future Scope
 
-  * Gmail SMTP
-  * Outlook SMTP
+**Current Limitations:**
 
----
+  * Uses rule-based AI logic rather than predictive Machine Learning models.
+  * Lacks real-time GPS hardware integration.
 
-### 🔥 Optional (Gmail SMTP Example)
+**Future Improvements:**
 
-```python
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SMTP_USER = "your_email@gmail.com"
-SMTP_PASS = "your_app_password"
-```
+  * [ ] Integrate predictive ML algorithms for advanced route optimization.
+  * [ ] Build cross-platform mobile applications (Android/iOS).
+  * [ ] Implement live GPS tracking via Google Maps API.
+  * [ ] Integrate WhatsApp/SMS notifications.
+  * [ ] Deploy to scalable cloud infrastructure (AWS/GCP).
 
-⚠️ You must use an **App Password**, not your Gmail password.
+-----
 
----
-## 🔑 Default Roles
+## 👨‍💻 Authors
 
-* **User** → Book parcels
-* **Admin** → Assign delivery staff
-* **Staff** → Update delivery status
+**Final Year Project** | *Gandhi Engineering College*
 
----
+  * **Bibhanshu Ojha**
+  * **Rutik Sahoo**
+  * **Lippsha Rani Pradhan**
 
-## 📊 Screenshots (Add These)
+-----
 
-* Home Page
-* Login/Register
-* Parcel Booking
-* Time Slot Selection (AI Suggestion)
-* Admin Dashboard
-* Staff Dashboard
-* Tracking Page
+### ⭐ Contribution
 
----
-
-## 🚧 Limitations
-
-* Basic AI (not advanced ML)
-* No real-time GPS tracking
-* Requires internet connection
-* SMS/email cost in real deployment
-
----
-
-## 🔮 Future Improvements
-
-* Advanced AI/ML models
-* Mobile application (Android/iOS)
-* Real-time GPS tracking
-* Cloud deployment
-* WhatsApp/SMS integration
-
----
-
-## 📚 References
-
-* Flask Documentation
-* MySQL Documentation
-* Scikit-learn
-* SMTP (Mailtrap)
-
----
-
-## 👨‍💻 Author
-
-Bibhanshu Ojha
-Rutik Sahoo
-Lippsha Rani Pradhan
-Final Year Project
-Gandhi Engineering College
-
----
-
-## ⭐ Contribution
-
-Feel free to fork this repository and improve the system!
-
----
-
-# 🎯 DONE
-
-	
+Found a bug or have an idea for an improvement? Feel free to **Fork** this repository, make your changes, and submit a **Pull Request**\!
