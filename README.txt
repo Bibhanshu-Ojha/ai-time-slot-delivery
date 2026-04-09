@@ -1,21 +1,20 @@
------
-
+````markdown
 # 🚀 AI-Based Customized Time Slot Delivery System
 
 > A smart, web-based application designed to revolutionize last-mile delivery. By allowing users to select preferred delivery windows and utilizing rule-based AI for optimal scheduling, this system minimizes failed delivery attempts and streamlines coordination between customers, admins, and delivery staff.
 
------
+---
 
 ## ✨ Key Features
 
-  - **⏰ Time-Slot Based Delivery:** Flexible windows (9–12, 12–3, 3–6, 6–9).
-  - **🤖 AI Slot Recommendation:** Smart suggestions based on historical data and current load capacity.
-  - **📦 Parcel Tracking:** Real-time status updates from dispatch to delivery.
-  - **🔔 Automated Email Notifications:** Integrated SMTP (via Mailtrap) to keep users informed.
-  - **🔐 Role-Based Access Control:** Dedicated, secure dashboards for Users, Staff, and Admins.
-  - **📊 Analytics Dashboard:** Comprehensive system overview for administrators.
+* **⏰ Time-Slot Based Delivery:** Flexible windows (9–12, 12–3, 3–6, 6–9).
+* **🤖 AI Slot Recommendation:** Smart suggestions based on historical data and current load capacity.
+* **📦 Parcel Tracking:** Real-time status updates from dispatch to delivery.
+* **🔔 Automated Email Notifications:** Integrated SMTP (via Mailtrap) to keep users informed.
+* **🔐 Role-Based Access Control:** Dedicated, secure dashboards for Users, Staff, and Admins.
+* **📊 Analytics Dashboard:** Comprehensive system overview for administrators.
 
------
+---
 
 ## 🧩 How It Works
 
@@ -26,7 +25,7 @@
 5.  🚚 **Delivery Execution:** Staff receive their itineraries and update delivery statuses on the go.
 6.  📧 **Real-Time Alerts:** Users receive email notifications at every milestone.
 
------
+---
 
 ## 🛠️ Tech Stack
 
@@ -38,16 +37,16 @@
 | **AI / Logic** | Rule-Based AI Scheduling & Capacity Checking |
 | **Notifications** | SMTP (Mailtrap) |
 
------
+---
 
 ## ⚙️ Installation & Setup
 
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery
+git clone [https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery](https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery)
 cd ai-time-slot-delivery
-```
+````
 
 **2. Create and activate a virtual environment**
 
@@ -181,9 +180,9 @@ SMTP_PASS = "YOUR_MAILTRAP_PASSWORD"
 
 ## 🔑 Roles & Access
 
-  - **👤 User:** Can book parcels, view AI slot suggestions, and track delivery status.
-  - **🧑‍💼 Admin:** Manages the system, views analytics, and assigns delivery personnel.
-  - **🚚 Staff:** Accesses their daily delivery itinerary and updates parcel statuses.
+  * **👤 User:** Can book parcels, view AI slot suggestions, and track delivery status.
+  * **🧑‍💼 Admin:** Manages the system, views analytics, and assigns delivery personnel.
+  * **🚚 Staff:** Accesses their daily delivery itinerary and updates parcel statuses.
 
 -----
 
@@ -217,3 +216,6 @@ SMTP_PASS = "YOUR_MAILTRAP_PASSWORD"
 ### ⭐ Contribution
 
 Found a bug or have an idea for an improvement? Feel free to **Fork** this repository, make your changes, and submit a **Pull Request**\!
+
+```
+```
