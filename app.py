@@ -58,6 +58,7 @@ def home():
 
 
 # (/register) route
+# (/register) route
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -67,13 +68,20 @@ def register():
         role = request.form["role"]
 
         cursor = db.cursor()
-        cursor.execute(
-            "INSERT INTO users (full_name, email, password, role) VALUES (%s, %s, %s, %s)",
-            (name, email, password, role),
-        )
-        db.commit()
-
-        return redirect("/")
+        try:
+            cursor.execute(
+                "INSERT INTO users (full_name, email, password, role) VALUES (%s, %s, %s, %s)",
+                (name, email, password, role),
+            )
+            db.commit()
+            # ADD THIS LINE:
+            flash("Registration successful! Please log in to continue.", "success")
+            return redirect(
+                "/login"
+            )  # Pro-tip: Redirect to login so they can immediately use their account
+        except mysql.connector.Error as err:
+            flash("Error: Email already exists or database issue.", "danger")
+            return redirect("/register")
 
     return render_template("register.html")
 
