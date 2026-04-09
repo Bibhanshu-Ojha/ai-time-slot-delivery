@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+````markdown
+>>>>>>> 2eb1f5dc761d01e6f01ffe7f5773d9ed29172550
 # 🚀 AI-Based Customized Time Slot Delivery System
 
 A smart web-based application designed to improve last-mile delivery.
@@ -8,12 +12,21 @@ This helps reduce failed deliveries and improves coordination.
 
 ## ✨ Key Features
 
+<<<<<<< HEAD
 * ⏰ Time-Slot Based Delivery (9–12, 12–3, 3–6, 6–9)
 * 🤖 AI Slot Recommendation (based on history and load)
 * 📦 Parcel Tracking (real-time status updates)
 * 🔔 Email Notifications (using SMTP via Mailtrap)
 * 🔐 Role-Based Access (User, Admin, Staff)
 * 📊 Admin Analytics Dashboard
+=======
+* **⏰ Time-Slot Based Delivery:** Flexible windows (9–12, 12–3, 3–6, 6–9).
+* **🤖 AI Slot Recommendation:** Smart suggestions based on historical data and current load capacity.
+* **📦 Parcel Tracking:** Real-time status updates from dispatch to delivery.
+* **🔔 Automated Email Notifications:** Integrated SMTP (via Mailtrap) to keep users informed.
+* **🔐 Role-Based Access Control:** Dedicated, secure dashboards for Users, Staff, and Admins.
+* **📊 Analytics Dashboard:** Comprehensive system overview for administrators.
+>>>>>>> 2eb1f5dc761d01e6f01ffe7f5773d9ed29172550
 
 ---
 
@@ -45,9 +58,9 @@ This helps reduce failed deliveries and improves coordination.
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery
+git clone [https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery](https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery)
 cd ai-time-slot-delivery
-```
+````
 
 ### 2. Create Virtual Environment
 
@@ -199,7 +212,13 @@ SMTP_PASS = "YOUR_MAILTRAP_PASSWORD"
 * 🧑‍💼 Admin → Assign staff, manage system
 * 🚚 Staff → View deliveries, update status
 
+<<<<<<< HEAD
 ---
+=======
+  * **👤 User:** Can book parcels, view AI slot suggestions, and track delivery status.
+  * **🧑‍💼 Admin:** Manages the system, views analytics, and assigns delivery personnel.
+  * **🚚 Staff:** Accesses their daily delivery itinerary and updates parcel statuses.
+>>>>>>> 2eb1f5dc761d01e6f01ffe7f5773d9ed29172550
 
 ## 🚧 Limitations
 
@@ -230,4 +249,11 @@ Final Year Project – Gandhi Engineering College
 
 ## ⭐ Contribution
 
+<<<<<<< HEAD
 Fork the repository and create a pull request to contribute.
+=======
+Found a bug or have an idea for an improvement? Feel free to **Fork** this repository, make your changes, and submit a **Pull Request**\!
+
+```
+```
+>>>>>>> 2eb1f5dc761d01e6f01ffe7f5773d9ed29172550
