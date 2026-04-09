@@ -53,7 +53,7 @@ This helps reduce failed deliveries and improves coordination.
 ### 1. Clone Repository
 
 ```bash
-git clone [https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery](https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery)
+git clone [https://github.com/Bibhanshu-Ojha/ai-time-slot-delivery]
 cd ai-time-slot-delivery
 ````
 
